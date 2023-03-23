@@ -8,6 +8,20 @@ AFRAME.registerComponent("cursor-c", {
         this.handleMouseLeaveEvent()
     },
 
+    update: function () {
+        const fadeBackgroundEl = document.querySelector("#fadeBackground")
+        c = fadeBackgroundEl.children
+
+        if (c.length > 0) {
+            var i
+            for (i = 0; i <= c.length; i++) {
+                fadeBackgroundEl.removeChild(c[i])
+            }
+        } else {
+            this.handleMouseClickEvent()
+        }
+    },
+
     handleMouseEnterEvent: function () {
         this.el.addEventListener("mouseenter", () => {
             const id = this.el.getAttribute("id")
@@ -39,5 +53,20 @@ AFRAME.registerComponent("cursor-c", {
                 });
             }
         })
+    },
+
+    handleMouseClickEvent: function () {
+        if (selectItemId) {
+            fadeBackgroundEl.setAttribute("visible", true)
+            fadeBackgroundEl.setAttribute("info-banner", { itemId: selectItemId })
+
+            titleEl.setAttribute("visible", false)
+            cursorEl.setAttribute("geometry", { radiusInner: 0.03, radiusOuter: 0.04 })
+        } else {
+            fadeBackgroundEl.setAttribute("visible", false);
+            titleEl.setAttribute("visible", true)
+            cursorEl.setAttribute("position", { x: 0, y: 0, z: -3 })
+            cursorEl.setAttribute("geometry", { radiusInner: 0.08, radiusOuter: 0.12 })
+        }
     }
 })
